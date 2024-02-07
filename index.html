@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="utils/heart_icon.png" type="image/x-icon">
+    <title>My Tubelight</title>
+    <style>
+        body {
+
+            height: 90vh;
+            background-color: #F8C8DC;
+        }
+
+        #ans {
+            display: none;
+        }
+
+        #ansvideo {
+            visibility: hidden;
+        }
+
+        #novideo {
+            visibility: hidden;
+        }
+
+        #noButton {
+            position: absolute;
+            margin-left: 150px;
+            transition: 0.5s;
+        }
+
+        #yesButton {
+            position: absolute;
+            margin-right: 150px;
+        }
+
+        .header_text {
+            font-family: 'Nunito';
+            font-size: 50px;
+            font-weight: bold;
+            color: rgb(227, 20, 82);
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 0px;
+            background-color: #ec9d9d;
+            padding: 10px;
+            border-radius: 5px;
+            text-shadow: 2px 2px #F8C8DC;
+        }
+
+        .text {
+            font-family: 'Nunito';
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 0px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .btn {
+            background-color: #FFB6C1;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff8e9f;
+        }
+
+        .gif_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qrimage {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 350px;
+            height: auto;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .header_text {
+                color: black;
+                font-size: 40px;
+            }
+
+            .qrimage {
+                max-width: 50%;
+                padding-left: 25%;
+            }
+
+            .gif_container {
+                margin-left: 0;
+                height: auto;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ask" class="container">
+        <div>
+            <h1 class="header_text" id="response">Do you wanna go out with me?</h1>
+        </div>
+        <div class="gif_container">
+            <img src="utils/ask.gif" alt="Cute animated illustration">
+        </div>
+        <div class="buttons">
+            <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
+            <button class="btn" id="noButton" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+        <video id="novideo" width="0" height="0" controls>
+            <source src="utils/SadMoment.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div id="ans" class="container">
+        <div>
+            <h1 class="header_text">Yeeeyyyy!! Lovee Youuu❤️</h1>
+        </div>
+        <div class="gif_container">
+            <img src="utils/ans.gif" alt="Cute animated illustration">
+        </div>
+        <!-- <div class="gif_container qrimage">
+                <img src="image/white_pegasus__qr.png" onclick="window.open(`https://www.instagram.com/white_pegasus_/`)" alt="Insta Profile QR code">
+            </div> -->
+        <video id="ansvideo" width="0" height="0" controls>
+            <source src="utils/KidsCheering.mp4" type="video/mp4">
+        </video>
+    </div>
+</body>
+<script>
+
+    const phrases = [
+        "Pleaaaseee",
+        "You make my heart flutter",
+        "I cherish every moment with you",
+        "Your smile brightens my darkest days.",
+        "Every moment with you is a treasure.",
+        "You're the reason I believe in love.",
+        "Your laughter is music to my soul.",
+        "In your arms, I've found my home.",
+        "Life is better with you by my side.",
+        "You're the missing piece to my puzzle.",
+        "With you, every day feels like a fairytale.",
+        "Your kindness warms the coldest days.",
+        "I'm grateful for the love we share.",
+        "Your presence is a gift I cherish every day.",
+        "You are the sunshine that lights up my world.",
+        "Loving you is the easiest and happiest thing I've ever done.",
+        "With you, even the ordinary moments become extraordinary.",
+        "Our love story is my favorite fairy tale.",
+        "Your love is the sweetest melody in the symphony of my life.",
+        "In your eyes, I find a reflection of pure joy.",
+        "You are the rainbow after my rainstorm.",
+        "With you, every day is Valentine's Day.",
+        "Your love is the secret ingredient to my happiness."
+    ];
+
+    let currentIndex = 0;
+
+    function getNextSequentialPhrase() {
+        const currentPhrase = phrases[currentIndex];
+        currentIndex = (currentIndex + 1) % phrases.length; // Increment index and restart if needed
+        return currentPhrase;
+    }
+
+    var debounce = function (fn, t = 1000) {
+        let timer;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn(...args), t);
+        }
+    };
+
+
+    function playAudio() {
+        document.getElementById('novideo').play();
+    }
+
+    function nextPage() {
+        //window.location.href = "yes.html";
+        document.getElementById('ans').style.display = 'block';
+        document.getElementById('ask').style.display = 'none';
+        document.getElementById('novideo').pause();
+        document.getElementById('ansvideo').play();
+    }
+
+    function moveButton() {
+        var button = document.getElementById('noButton');
+        var x = Math.random() * (window.innerWidth - button.offsetWidth);
+        var y = Math.random() * (window.innerHeight - button.offsetHeight);
+
+        // Ensure the button stays within the screen boundaries
+        x = Math.max(0, Math.min(x, window.innerWidth - button.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - button.offsetHeight));
+
+
+        document.getElementById('noButton').style.left = `${x}px`;
+        document.getElementById('noButton').style.top = `${y}px`;
+        playAudio();
+
+        const randomPhrase = getNextSequentialPhrase()//phrases[Math.floor(Math.random() * phrases.length)];
+        document.getElementById('response').innerText = randomPhrase;
+    }
+
+</script>
+
+</html>
